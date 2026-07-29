@@ -299,6 +299,16 @@
             margin-top:10px;
             font-size:15px;
         }
+        .rating{
+
+    color:#fbbf24;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    margin:10px 0;
+}
 .how-it-works{
 
     padding:60px 10%;
@@ -452,6 +462,10 @@
 </div>
 
     <h3>{{ carer.full_name }}</h3>
+    <p class="rating">
+    ⭐ {{ carer.average_rating }}
+</p>
+
 
     <p>{{ carer.experience_years }} Years Experience</p>
 
