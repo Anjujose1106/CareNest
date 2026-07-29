@@ -1,5 +1,6 @@
 from django.db import models
 from carers.models import Carer
+from django.contrib.auth.models import User
 
 
 class Booking(models.Model):
@@ -10,6 +11,12 @@ class Booking(models.Model):
         ('personal', 'Personal Care'),
         ('overnight', 'Overnight Care'),
         ('companionship', 'Companionship'),
+    )
+    family = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
     )
 
     client_name = models.CharField(max_length=100)

@@ -1,0 +1,208 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Bookings | CareNest</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .dashboard {
+            max-width: 1100px;
+            margin: auto;
+            padding: 60px 20px;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-header p {
+            color: #64748b;
+            font-size: 18px;
+        }
+
+        .bookings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .booking-card {
+            background: white;
+            padding: 28px;
+            border-radius: 22px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+        }
+
+        .booking-card h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+
+        .booking-detail {
+            margin-bottom: 10px;
+            color: #475569;
+        }
+
+        .booking-detail strong {
+            color: #0f172a;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 10px 18px;
+            background: #ecfdf5;
+            color: #047857;
+            border-radius: 999px;
+            font-weight: bold;
+        }
+
+        .empty-state {
+            text-align: center;
+            background: white;
+            padding: 60px;
+            border-radius: 24px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+        }
+
+        .empty-state h2 {
+            margin-bottom: 15px;
+        }
+
+        .empty-state p {
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: #14b8a6;
+            color: white;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #0f766e;
+        }
+
+        .top-links {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .top-links a {
+            color: #14b8a6;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0 10px;
+        }
+
+        .top-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <div class="dashboard-header">
+
+        <h1>My Bookings</h1>
+
+        <p>
+            View your CareNest booking requests.
+        </p>
+
+    </div>
+
+    {% if bookings %}
+
+        <div class="bookings-grid">
+
+            {% for booking in bookings %}
+
+                <div class="booking-card">
+
+                    <h3>{{ booking.carer.full_name }}</h3>
+
+                    <div class="booking-detail">
+                        <strong>Care Type:</strong>
+                        {{ booking.get_care_type_display }}
+                    </div>
+
+                    <div class="booking-detail">
+                        <strong>Date:</strong>
+                        {{ booking.booking_date }}
+                    </div>
+
+                    <div class="booking-detail">
+                        <strong>Time:</strong>
+                        {{ booking.start_time }} - {{ booking.end_time }}
+                    </div>
+
+                    <div class="booking-detail">
+                        <strong>Name:</strong>
+                        {{ booking.client_name }}
+                    </div>
+
+                    <div class="booking-detail">
+                        <strong>Email:</strong>
+                        {{ booking.client_email }}
+                    </div>
+
+                    <span class="status">
+                        Request Sent
+                    </span>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <h2>No bookings yet</h2>
+
+            <p>
+                You have not made any booking requests yet.
+            </p>
+
+           
+        </div>
+
+    {% endif %}
+
+    <div class="top-links">
+
+    <a href="/">Back to Home</a>
+
+       <a href="/carers/">Find More Carers</a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

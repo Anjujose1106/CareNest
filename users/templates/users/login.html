@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login | CareNest</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 520px;
+            background: white;
+            padding: 45px;
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.10);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 36px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        form p {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20,184,166,0.15);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: #14b8a6;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #0f766e;
+        }
+
+        .bottom-link {
+            text-align: center;
+            margin-top: 22px;
+        }
+
+        .bottom-link a {
+            color: #14b8a6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .bottom-link a:hover {
+            text-decoration: underline;
+        }
+
+        .errorlist {
+            color: #dc2626;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <h1>Login</h1>
+
+        <p class="subtitle">
+            Welcome back to CareNest.
+        </p>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="submit-btn">
+                Login
+            </button>
+
+        </form>
+
+        <div class="bottom-link">
+            Don't have an account?
+            /register/Create one</a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
