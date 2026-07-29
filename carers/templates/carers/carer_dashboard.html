@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Carer Dashboard | CareNest</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .dashboard {
+            max-width: 1100px;
+            margin: auto;
+            padding: 60px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 18px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 28px;
+            border-radius: 22px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 30px;
+            color: #14b8a6;
+            margin-bottom: 8px;
+        }
+
+        .stat-card p {
+            color: #64748b;
+        }
+
+        .section {
+            margin-top: 45px;
+        }
+
+        .section h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .booking-card {
+            background: white;
+            padding: 28px;
+            border-radius: 22px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .booking-card h3 {
+            margin-bottom: 12px;
+        }
+
+        .booking-detail {
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        .booking-detail strong {
+            color: #0f172a;
+        }
+
+        .next-shift {
+            background: #ecfdf5;
+            border: 1px solid #99f6e4;
+        }
+
+        .empty {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            color: #64748b;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .links a {
+            color: #14b8a6;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0 10px;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <div class="header">
+        <h1>Carer Dashboard</h1>
+        <p>Welcome, {{ carer.full_name }}</p>
+    </div>
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <h3>{{ upcoming_bookings|length }}</h3>
+            <p>Upcoming Shifts</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>{{ total_hours }}</h3>
+            <p>Hours Completed</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>£{{ estimated_earnings }}</h3>
+            <p>Estimated Earnings</p>
+        </div>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Next Shift</h2>
+
+        {% if next_booking %}
+
+            <div class="booking-card next-shift">
+
+                <h3>{{ next_booking.client_name }}</h3>
+
+                <div class="booking-detail">
+                    <strong>Care Type:</strong>
+                    {{ next_booking.get_care_type_display }}
+                </div>
+
+                <div class="booking-detail">
+                    <strong>Date:</strong>
+                    {{ next_booking.booking_date }}
+                </div>
+
+                <div class="booking-detail">
+                    <strong>Time:</strong>
+                    {{ next_booking.start_time }} - {{ next_booking.end_time }}
+                </div>
+
+                <div class="booking-detail">
+                    <strong>Email:</strong>
+                    {{ next_booking.client_email }}
+                </div>
+
+            </div>
+
+        {% else %}
+
+            <div class="empty">
+                No upcoming shifts yet.
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    <div class="section">
+
+        <h2>Upcoming Bookings</h2>
+
+        {% for booking in upcoming_bookings %}
+
+            <div class="booking-card">
+
+                <h3>{{ booking.client_name }}</h3>
+
+                <div class="booking-detail">
+                    <strong>Care Type:</strong>
+                    {{ booking.get_care_type_display }}
+                </div>
+
+                <div class="booking-detail">
+                    <strong>Date:</strong>
+                    {{ booking.booking_date }}
+                </div>
+
+                <div class="booking-detail">
+                    <strong>Time:</strong>
+                    {{ booking.start_time }} - {{ booking.end_time }}
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <div class="empty">
+                No upcoming bookings.
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    <div class="section">
+
+        <h2>Past Activity</h2>
+
+        {% for booking in past_bookings %}
+
+            <div class="booking-card">
+
+                <h3>{{ booking.client_name }}</h3>
+
+                <div class="booking-detail">
+                    <strong>Care Type:</strong>
+                    {{ booking.get_care_type_display }}
+                </div>
+
+                <div class="booking-detail">
+                    <strong>Date:</strong>
+                    {{ booking.booking_date }}
+                </div>
+
+                <div class="booking-detail">
+                    <strong>Time:</strong>
+                    {{ booking.start_time }} - {{ booking.end_time }}
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <div class="empty">
+                No past activity yet.
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    <div class="links">
+        /Back to Home</a>
+        /logout/Logout</a>
+    </div>
+
+</div>
+
+</body>
+</html>

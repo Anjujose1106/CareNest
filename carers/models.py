@@ -1,19 +1,28 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Carer(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='carer_profile'
+    )
     
     GENDER_CHOICES = (
         ('male', 'Male'),
         ('female', 'Female'),
     )
+
     CARE_TYPES = (
         ('Dementia Care', 'Dementia Care'),
         ('Personal Care', 'Personal Care'),
         ('Companionship', 'Companionship'),
         ('Overnight Care', 'Overnight Care'),
     )
-
+   
     care_type = models.CharField(
         max_length=50,
         choices=CARE_TYPES,
