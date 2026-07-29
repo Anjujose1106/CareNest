@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book {{ carer.full_name }}</title>
+</head>
+
+<body>
+
+<h1>Book {{ carer.full_name }}</h1>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <p>
+        Name:
+        <input type="text" name="client_name">
+    </p>
+
+    <p>
+        Email:
+        <input type="email" name="client_email">
+    </p>
+
+    <p>
+        Care Type:
+        <select name="care_type">
+            <option value="elderly">Elderly Care</option>
+            <option value="dementia">Dementia Care</option>
+            <option value="personal">Personal Care</option>
+            <option value="overnight">Overnight Care</option>
+            <option value="companionship">Companionship</option>
+        </select>
+    </p>
+
+    <p>
+        Date:
+        <input type="date" name="booking_date">
+    </p>
+
+    <p>
+        Start Time:
+        <input type="time" name="start_time">
+    </p>
+
+    <p>
+        End Time:
+        <input type="time" name="end_time">
+    </p>
+
+    <button type="submit">
+        Submit Booking
+    </button>
+
+</form>
+
+</body>
+</html>

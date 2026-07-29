@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ carer.full_name }}</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            max-width:800px;
+            margin:auto;
+            padding:40px;
+            background:#f5f7fa;
+        }
+
+        .card{
+            background:white;
+            padding:30px;
+            border-radius:12px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .price{
+            color:green;
+            font-size:24px;
+            font-weight:bold;
+        }
+
+        .btn{
+            background:#1e40af;
+            color:white;
+            padding:12px 20px;
+            border-radius:8px;
+            text-decoration:none;
+            display:inline-block;
+}
+    </style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>{{ carer.full_name }}</h1>
+
+    <p>{{ carer.bio }}</p>
+
+    <p>
+        Experience:
+        {{ carer.experience_years }} years
+    </p>
+
+    <p>
+        Postcode:
+        {{ carer.postcode }}
+    </p>
+
+    <p>
+        DBS Verified:
+        {{ carer.dbs_verified }}
+    </p>
+
+    <p class="price">
+        £{{ carer.hourly_rate }}/hour
+    </p>
+
+    <a href="/booking/{{ carer.id }}/" class="btn">
+    <button class="btn">
+        Book This Carer
+    </button>
+</a>
+
+</div>
+
+</body>
+</html>
