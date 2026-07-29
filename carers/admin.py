@@ -33,13 +33,13 @@ class CarerApplicationAdmin(admin.ModelAdmin):
         'phone_number',
         'postcode',
         'care_type',
-        'approved',
+        'status',
         'submitted_at',
     )
 
     list_filter = (
         'care_type',
-        'approved',
+        'status',
         'submitted_at',
     )
 

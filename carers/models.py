@@ -66,6 +66,18 @@ class Carer(models.Model):
 
 
 class CarerApplication(models.Model):
+    
+    STATUS_CHOICES = (
+    ('pending', 'Pending'),
+    ('approved', 'Approved'),
+    ('rejected', 'Rejected'),
+    )
+
+    status = models.CharField(
+    max_length=20,
+    choices=STATUS_CHOICES,
+    default='pending'
+    )
 
     full_name = models.CharField(max_length=100)
 
@@ -90,9 +102,6 @@ class CarerApplication(models.Model):
         auto_now_add=True
     )
 
-    approved = models.BooleanField(
-        default=False
-    )
-
+    
     def __str__(self):
         return self.full_name
