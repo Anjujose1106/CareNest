@@ -20,10 +20,15 @@ def create_booking(request, carer_id):
             end_time=request.POST["end_time"],
         )
 
-        return redirect('/')
+        return redirect('booking_success')
 
     return render(
         request,
         'bookings/create_booking.html',
         {'carer': carer}
+    )
+def booking_success(request):
+    return render(
+        request,
+        'bookings/booking_success.html'
     )

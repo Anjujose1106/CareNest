@@ -1,74 +1,309 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ carer.full_name }}</title>
+    <title>{{ carer.full_name }} | CareNest</title>
 
     <style>
-        body{
-            font-family: Arial, sans-serif;
-            max-width:800px;
-            margin:auto;
-            padding:40px;
-            background:#f5f7fa;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .card{
-            background:white;
-            padding:30px;
-            border-radius:12px;
-            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
         }
 
-        .price{
-            color:green;
-            font-size:24px;
-            font-weight:bold;
+        .profile-page {
+            min-height: 100vh;
+            padding: 60px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .btn{
-            background:#1e40af;
-            color:white;
-            padding:12px 20px;
-            border-radius:8px;
-            text-decoration:none;
+        .profile-card {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 18px 45px rgba(0,0,0,0.12);
+            display: grid;
+            grid-template-columns: 380px 1fr;
+        }
+
+        .profile-left {
+            background:
+                linear-gradient(
+                    rgba(0,0,0,0.45),
+                    rgba(0,0,0,0.45)
+                ),
+                url("{% static 'images/carers-hero.webp' %}");
+            background-size: cover;
+            background-position: center;
+            padding: 45px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #14b8a6;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            margin-bottom: 25px;
+        }
+
+        .profile-left h1 {
+            font-size: 34px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .rating {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .verified-badge {
+            background: rgba(20,184,166,0.95);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 999px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .profile-right {
+            padding: 50px;
+        }
+
+        .profile-right h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        .profile-left img {
+            width: 75px;
+            height: 75px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #14b8a6;
+        }
+        .bio {
+            color: #475569;
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 35px;
+        }
+
+        .info-box {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 18px;
+        }
+
+        .info-box span {
+            display: block;
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .info-box strong {
+            font-size: 20px;
+            color: #0f172a;
+        }
+
+        .price-box {
+            background: #ecfdf5;
+            border: 1px solid #99f6e4;
+            padding: 22px;
+            border-radius: 18px;
+            margin-bottom: 30px;
+        }
+
+        .price-box span {
+            color: #64748b;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            font-size: 34px;
+            font-weight: bold;
+            color: #15803d;
+        }
+
+       .buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .view-btn{
+
             display:inline-block;
-}
-    </style>
 
+            margin-top:15px;
+
+            background:#14b8a6;
+
+            color:white;
+
+            padding:12px 25px;
+
+            text-decoration:none;
+
+            border-radius:8px;
+        }
+        .book-btn {
+            display: inline-block;
+            background: #14b8a6;
+            color: white;
+            padding: 16px 32px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 17px;
+            transition: 0.3s;
+        }
+
+        .book-btn:hover {
+            background: #0f766e;
+            transform: translateY(-2px);
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: #f1f5f9;
+            color: #0f172a;
+            padding: 16px 32px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .back-btn:hover {
+            background: #e2e8f0;
+        }
+
+        @media (max-width: 900px) {
+            .profile-card {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-left {
+                min-height: 360px;
+            }
+
+            .profile-right {
+                padding: 35px 25px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="profile-page">
 
-    <h1>{{ carer.full_name }}</h1>
+    <div class="profile-card">
 
-    <p>{{ carer.bio }}</p>
+        <div class="profile-left">
 
-    <p>
-        Experience:
-        {{ carer.experience_years }} years
-    </p>
+            {% if carer.photo %}
+                    <img src="{{ carer.photo.url }}">
+                {% endif %}
 
-    <p>
-        Postcode:
-        {{ carer.postcode }}
-    </p>
+            <h1>{{ carer.full_name }}</h1>
 
-    <p>
-        DBS Verified:
-        {{ carer.dbs_verified }}
-    </p>
+            <div class="rating">
+                ⭐⭐⭐⭐⭐
+            </div>
 
-    <p class="price">
-        £{{ carer.hourly_rate }}/hour
-    </p>
+            {% if carer.dbs_verified %}
+                <div class="verified-badge">
+                    DBS Verified
+                </div>
+            {% endif %}
 
-    <a href="/booking/{{ carer.id }}/" class="btn">
-    <button class="btn">
-        Book This Carer
-    </button>
-</a>
+        </div>
+
+        <div class="profile-right">
+
+            <h2>About {{ carer.full_name }}</h2>
+
+            <p class="bio">
+                {{ carer.bio }}
+            </p>
+
+            <div class="info-grid">
+
+                <div class="info-box">
+                    <span>Experience</span>
+                    <strong>{{ carer.experience_years }} years</strong>
+                </div>
+
+                <div class="info-box">
+                    <span>Location</span>
+                    <strong>{{ carer.postcode }}</strong>
+                </div>
+
+                <div class="info-box">
+                    <span>Care Services</span>
+                    <strong>Personal Support</strong>
+                </div>
+
+                <div class="info-box">
+                    <span>Availability</span>
+                    <strong>Flexible</strong>
+                </div>
+
+            </div>
+
+            <div class="price-box">
+                <span>Hourly Rate</span>
+                <div class="price">
+                    £{{ carer.hourly_rate }}/hour
+                </div>
+            </div>
+
+            <div class="buttons">
+
+               <a href="/booking/{{ carer.id }}/" class="view-btn">
+                    Book This Carer
+                </a>
+
+                <a href="/carers/"class="view-btn">
+                    Back to Carers
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 

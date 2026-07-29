@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Booking Confirmed | CareNest</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .success-page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .success-card {
+            max-width: 650px;
+            background: white;
+            padding: 50px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.10);
+        }
+
+        .success-icon {
+            width: 90px;
+            height: 90px;
+            background: #14b8a6;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 45px;
+            margin: 0 auto 25px;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #64748b;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .view-btn{
+
+            display:inline-block;
+
+            margin-top:15px;
+
+            background:#14b8a6;
+
+            color:white;
+
+            padding:12px 25px;
+
+            text-decoration:none;
+
+            border-radius:8px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: #14b8a6;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .btn-primary:hover {
+            background: #0f766e;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="success-page">
+
+    <div class="success-card">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h1>Booking Request Sent</h1>
+
+        <p>
+            Thank you. Your booking request has been received.
+            A CareNest team member will review the request and contact you shortly.
+        </p>
+
+        <div class="buttons">
+
+           <a href="/"class="view-btn">
+                Back to Home
+            </a>
+
+           <a href="/carers/"class="view-btn">
+                Find More Carers
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
