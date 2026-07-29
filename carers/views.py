@@ -17,16 +17,22 @@ def home(request):
     )
 
 
+from reviews.models import Review
+
 def carer_detail(request, id):
-    carer = get_object_or_404(
-        Carer,
-        id=id
+    carer = get_object_or_404(Carer, id=id)
+
+    reviews = Review.objects.filter(
+        carer=carer
     )
 
     return render(
         request,
         'carers/carer_detail.html',
-        {'carer': carer}
+        {
+            'carer': carer,
+            'reviews': reviews,
+        }
     )
 def join(request):
     return render(

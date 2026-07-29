@@ -149,6 +149,34 @@
             font-weight: bold;
             color: #15803d;
         }
+        .reviews-section{
+    margin-top:40px;
+}
+
+.reviews-section h2{
+    margin-bottom:20px;
+}
+
+.review-card{
+
+    background:#f8fafc;
+
+    padding:20px;
+
+    border-radius:16px;
+
+    margin-bottom:15px;
+}
+
+.review-card h4{
+    margin-bottom:8px;
+}
+
+.stars{
+    color:#facc15;
+    margin-bottom:10px;
+    font-size:18px;
+}
 
        .buttons {
             display: flex;
@@ -281,7 +309,33 @@
                 </div>
 
             </div>
+<div class="reviews-section">
 
+    <h2>Reviews</h2>
+
+    {% for review in reviews %}
+
+        <div class="review-card">
+
+            <h4>{{ review.reviewer_name }}</h4>
+
+            <p class="stars">
+                ⭐⭐⭐⭐⭐
+            </p>
+
+            <p>
+                "{{ review.comment }}"
+            </p>
+
+        </div>
+
+    {% empty %}
+
+        <p>No reviews yet.</p>
+
+    {% endfor %}
+
+</div>
             <div class="price-box">
                 <span>Hourly Rate</span>
                 <div class="price">
