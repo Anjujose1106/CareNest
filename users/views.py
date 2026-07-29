@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from .forms import FamilyRegisterForm
-
+from django.contrib.auth.decorators import login_required
 
 def register(request):
 
@@ -31,5 +31,16 @@ def register(request):
 def custom_logout(request):
 
     logout(request)
+
+    return redirect('/')
+
+
+
+
+@login_required
+def dashboard_redirect(request):
+
+    if hasattr(request.user, 'carer_profile'):
+        return redirect('/carer-dashboard/')
 
     return redirect('/')

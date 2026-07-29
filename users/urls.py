@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import register, custom_logout
+from .views import register, custom_logout, dashboard_redirect
 
 
 urlpatterns = [
@@ -15,4 +15,5 @@ urlpatterns = [
     ),
 
     path('logout/', custom_logout, name='logout'),
+    path('dashboard/', dashboard_redirect, name='dashboard_redirect'),
 ]

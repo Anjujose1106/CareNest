@@ -359,42 +359,58 @@
 
 
    <div class="nav-links">
+
+        
+
      {% if user.is_authenticated %}
+        {% if is_carer %}
         <span class="welcome-user">
                 Hi, {{ user.username }}
         </span>
+            
+        <a href="/carer-dashboard/">
+                   Carer Dashboard
+                </a>
 
+        <a href=" /logout/">Logout</a>
 
-     <a href="#about">About</a>
-     
-    <a href="#services">Services</a>
-
+       {% else %} 
+       <span class="welcome-user">
+                Hi, {{ user.username }}
+        </span>
+       
+        <a href="/">Home</a>
+        
+        <a href="#about">About</a>
+        
+        <a href="#services">Services</a>
+        
+        <a href="/carers/">Find Care</a>
+                  
    
-    <a href="/carers/">Find Care</a>
-
-    <a href="/join/">Become A Carer</a>
-
-   
-
        <a href=" /booking/my-bookings/">
             My Bookings
         </a>
-
-    <a href=" /logout/">Logout</a>
+         <a href=" /logout/">Logout</a>
+        {% endif %}
         
+           {% else %}   
+        <a href="/">Home</a>    
+        <a href="#about">About</a>
+        
+        <a href="#services">Services</a>
+        
+        <a href="/carers/">Find Care</a>
 
-    {% else %}
+        <a href="/join/">Become A Carer</a>
 
-       <a href="register/">
-            Register
-        </a>
-
-        <a href="/login/">
+     <a href="/register/">
+              Register
+            </a>
+          <a href="/login/">
             Login
-        </a>
-
-    {% endif %}
-
+             </a>
+{% endif %}
 </div>
 
 </nav>
