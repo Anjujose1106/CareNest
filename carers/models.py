@@ -62,5 +62,37 @@ class Carer(models.Model):
         total = sum(review.rating for review in reviews)
 
         return round(total / len(reviews), 1)
-    
-    
+
+
+
+class CarerApplication(models.Model):
+
+    full_name = models.CharField(max_length=100)
+
+    email = models.EmailField()
+
+    phone_number = models.CharField(max_length=20)
+
+    postcode = models.CharField(max_length=20)
+
+    experience_years = models.PositiveIntegerField()
+
+    care_type = models.CharField(
+        max_length=50,
+        choices=Carer.CARE_TYPES
+    )
+
+    message = models.TextField(
+        blank=True
+    )
+
+    submitted_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    approved = models.BooleanField(
+        default=False
+    )
+
+    def __str__(self):
+        return self.full_name

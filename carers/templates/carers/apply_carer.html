@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Apply as a Carer | CareNest</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .apply-page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        .apply-card {
+            width: 100%;
+            max-width: 750px;
+            background: white;
+            padding: 45px;
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.10);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 36px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 35px;
+            font-size: 17px;
+        }
+
+        form p {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 120px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20,184,166,0.15);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: #14b8a6;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #0f766e;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #14b8a6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .view-btn{
+
+    display:inline-block;
+
+    margin-top:15px;
+
+    background:#14b8a6;
+
+    color:white;
+
+    padding:12px 25px;
+
+    text-decoration:none;
+
+    border-radius:8px;
+}
+    </style>
+</head>
+
+<body>
+
+<div class="apply-page">
+
+    <div class="apply-card">
+
+        <h1>Apply to Join CareNest</h1>
+
+        <p class="subtitle">
+            Tell us about your care experience and availability.
+        </p>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="submit-btn">
+                Submit Application
+            </button>
+
+        </form>
+
+        <a href="/join/">
+                        ← Back to Join Page
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

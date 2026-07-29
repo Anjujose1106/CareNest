@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Carer
+from .forms import CarerApplicationForm
 
 def carer_list(request):
 
@@ -53,4 +54,28 @@ def join(request):
     return render(
         request,
         'carers/join.html'
+    )
+def apply_carer(request):
+
+    if request.method == 'POST':
+
+        form = CarerApplicationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('/join/success/')
+
+    else:
+        form = CarerApplicationForm()
+
+    return render(
+        request,
+        'carers/apply_carer.html',
+        {'form': form}
+    )
+def join_success(request):
+    return render(
+        request,
+        'carers/join_success.html'
     )
