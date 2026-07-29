@@ -2,12 +2,23 @@ from django.db import models
 
 
 class Carer(models.Model):
-
+    
     GENDER_CHOICES = (
         ('male', 'Male'),
         ('female', 'Female'),
     )
+    CARE_TYPES = (
+        ('Dementia Care', 'Dementia Care'),
+        ('Personal Care', 'Personal Care'),
+        ('Companionship', 'Companionship'),
+        ('Overnight Care', 'Overnight Care'),
+    )
 
+    care_type = models.CharField(
+        max_length=50,
+        choices=CARE_TYPES,
+        default='Personal Care'
+    )
     full_name = models.CharField(max_length=100)
 
     photo = models.ImageField(
@@ -51,3 +62,5 @@ class Carer(models.Model):
         total = sum(review.rating for review in reviews)
 
         return round(total / len(reviews), 1)
+    
+    

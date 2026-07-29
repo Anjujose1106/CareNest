@@ -5,11 +5,17 @@ def carer_list(request):
 
     carers = Carer.objects.all()
 
-    query = request.GET.get('q')
+    postcode = request.GET.get('q')
+    care_type = request.GET.get('care_type')
 
-    if query:
+    if postcode:
         carers = carers.filter(
-            postcode__icontains=query
+            postcode__icontains=postcode
+        )
+
+    if care_type:
+        carers = carers.filter(
+            care_type=care_type
         )
 
     return render(
