@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from .forms import FamilyRegisterForm
 
 
@@ -26,3 +26,10 @@ def register(request):
         'users/register.html',
         {'form': form}
     )
+
+
+def custom_logout(request):
+
+    logout(request)
+
+    return redirect('/')
