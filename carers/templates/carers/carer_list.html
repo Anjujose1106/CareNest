@@ -106,6 +106,47 @@
 
     border-radius:10px;
 }
+.search-container{
+
+    text-align:center;
+
+    margin:40px 0;
+}
+
+.search-container input{
+
+    width:300px;
+
+    padding:14px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    font-size:16px;
+}
+
+.search-container button{
+
+    padding:14px 25px;
+
+    margin-left:10px;
+
+    background:#14b8a6;
+
+    color:white;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+}
+
+.search-container button:hover{
+
+    background:#0f766e;
+}
         .buttons{
 
             margin-top:40px;
@@ -447,6 +488,23 @@
 <h2 style="text-align:center;">
     Available Carers
 </h2>
+<div class="search-container">
+
+    <form method="GET">
+
+        <input
+            type="text"
+            name="q"
+            placeholder="Search by postcode..."
+        >
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
+</div>
 <div class="carers-grid">
 
 {% for carer in carers %}

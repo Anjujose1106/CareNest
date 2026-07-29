@@ -1,14 +1,23 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Carer
 
-
 def carer_list(request):
+
     carers = Carer.objects.all()
+
+    query = request.GET.get('q')
+
+    if query:
+        carers = carers.filter(
+            postcode__icontains=query
+        )
 
     return render(
         request,
         'carers/carer_list.html',
-        {'carers': carers}
+        {
+            'carers': carers
+        }
     )
 def home(request):
     return render(
