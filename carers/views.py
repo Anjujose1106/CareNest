@@ -101,9 +101,9 @@ def carer_dashboard(request):
     ).order_by('booking_date', 'start_time')
 
     past_bookings = Booking.objects.filter(
-        carer=carer,
-        booking_date__lt=today
-    ).order_by('-booking_date')
+    carer=carer,
+    status='completed'
+).order_by('-booking_date')
 
     total_hours = 0
 

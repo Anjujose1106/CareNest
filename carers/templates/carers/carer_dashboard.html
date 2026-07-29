@@ -171,6 +171,11 @@
                 </div>
 
                 <div class="booking-detail">
+                    <strong>Status:</strong>
+                    {{ next_booking.get_status_display }}
+                </div>
+
+                <div class="booking-detail">
                     <strong>Email:</strong>
                     {{ next_booking.client_email }}
                 </div>
@@ -211,7 +216,10 @@
                     <strong>Time:</strong>
                     {{ booking.start_time }} - {{ booking.end_time }}
                 </div>
-
+                <div class="booking-detail">
+                    <strong>Status:</strong>
+                    {{ booking.get_status_display }}
+                </div>
             </div>
 
         {% empty %}
@@ -248,7 +256,10 @@
                     <strong>Time:</strong>
                     {{ booking.start_time }} - {{ booking.end_time }}
                 </div>
-
+                <div class="booking-detail">
+                    <strong>Status:</strong>
+                    {{ booking.get_status_display }}
+                </div>
             </div>
 
         {% empty %}

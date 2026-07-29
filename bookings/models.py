@@ -39,6 +39,19 @@ class Booking(models.Model):
 
     end_time = models.TimeField()
 
+    STATUS_CHOICES = (
+    ('pending', 'Pending'),
+    ('confirmed', 'Confirmed'),
+    ('completed', 'Completed'),
+    ('cancelled', 'Cancelled'),
+    )
+
+    status = models.CharField(
+    max_length=20,
+    choices=STATUS_CHOICES,
+    default='pending'
+    )
+
     created_at = models.DateTimeField(
         auto_now_add=True
     )
