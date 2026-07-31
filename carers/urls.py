@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, carer_list, carer_detail, join,apply_carer, join_success,carer_dashboard,admin_dashboard, admin_applications
+from .views import home, carer_list, carer_detail, join,apply_carer, join_success,carer_dashboard,admin_dashboard, admin_applications, approve_application, reject_application
 
 urlpatterns = [
     path('', home, name='home'),
@@ -18,5 +18,16 @@ path(
     'admin-dashboard/applications/',
     admin_applications,
     name='admin_applications'
+),
+path(
+    'admin-dashboard/applications/<int:application_id>/approve/',
+    approve_application,
+    name='approve_application'
+),
+
+path(
+    'admin-dashboard/applications/<int:application_id>/reject/',
+    reject_application,
+    name='reject_application'
 ),
 ]

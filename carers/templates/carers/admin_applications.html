@@ -119,17 +119,19 @@
     <div class="sidebar">
 
         <h2>CareNest Admin</h2>
+ <a href="/admin-dashboard/">Overview</a>
 
-        /admin-dashboard/
-            Overview
-        </a>
+        <a href="/admin-dashboard/applications/">Applications</a>
 
-        /admin-dashboard/applications/
-            Applications
-        </a>
+        <a href="/admin/">Bookings</a>
 
-        /logout/
-            Logout
+        <a href="/admin/">Carers</a>
+
+        <a href="/admin/">Families</a>
+
+        <a href="/admin/">Reviews</a>
+
+        <a href="/logout/">Logout</a>
         </a>
 
     </div>
@@ -177,11 +179,11 @@
 
                 <div class="actions">
 
-                    #
+                    <a href="{% url 'approve_application' application.id %}" class="btn approve">
                         Approve
                     </a>
 
-                    #
+                    <a href="{% url 'reject_application' application.id %}" class="btn reject">
                         Reject
                     </a>
 

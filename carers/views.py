@@ -187,3 +187,29 @@ def admin_applications(request):
             'applications': applications
         }
     )
+@user_passes_test(lambda u: u.is_superuser)
+def approve_application(request, application_id):
+
+    application = get_object_or_404(
+        CarerApplication,
+        id=application_id
+    )
+
+    application.status = 'approved'
+    application.save()
+
+    return redirect('/admin-dashboard/applications/')
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def reject_application(request, application_id):
+
+    application = get_object_or_404(
+        CarerApplication,
+        id=application_id
+    )
+
+    application.status = 'rejected'
+    application.save()
+
+    return redirect('/admin-dashboard/applications/')
