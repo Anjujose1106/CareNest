@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard | CareNest</title>
+
+    <style>
+        body{
+            margin:0;
+            font-family:"Segoe UI",sans-serif;
+            background:#f8fafc;
+        }
+
+        .layout{
+            display:grid;
+            grid-template-columns:280px 1fr;
+            min-height:100vh;
+        }
+
+        .sidebar{
+            background:#0f172a;
+            color:white;
+            padding:30px;
+        }
+
+        .sidebar h2{
+            margin-bottom:30px;
+        }
+
+        .sidebar a{
+            display:block;
+            color:white;
+            text-decoration:none;
+            padding:14px;
+            margin-bottom:12px;
+            border-radius:10px;
+        }
+
+        .sidebar a:hover{
+            background:#14b8a6;
+        }
+
+        .main{
+            padding:50px;
+        }
+
+        .cards{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:25px;
+        }
+
+        .card{
+            background:white;
+            padding:40px;
+            border-radius:24px;
+            text-align:center;
+            box-shadow:0 12px 35px rgba(0,0,0,0.08);
+        }
+
+        .card h3{
+            font-size:42px;
+            color:#14b8a6;
+        }
+
+        .card p{
+            color:#64748b;
+            margin-top:10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <div class="sidebar">
+
+        <h2>CareNest Admin</h2>
+
+       <a href="/admin-dashboard/">Overview</a>
+
+        <a href="/admin-dashboard/applications/">Applications</a>
+
+        <a href="/admin/">Bookings</a>
+
+        <a href="/admin/">Carers</a>
+
+        <a href="/admin/">Families</a>
+
+        <a href="/admin/">Reviews</a>
+
+        <a href="/logout/">Logout</a>
+
+    </div>
+
+    <div class="main">
+
+        <h1>Admin Dashboard</h1>
+
+        <br>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>{{ total_carers }}</h3>
+                <p>Total Carers</p>
+            </div>
+
+            <div class="card">
+                <h3>{{ pending_applications }}</h3>
+                <p>Pending Applications</p>
+            </div>
+
+            <div class="card">
+                <h3>{{ total_bookings }}</h3>
+                <p>Total Bookings</p>
+            </div>
+
+            <div class="card">
+                <h3>{{ total_families }}</h3>
+                <p>Families</p>
+            </div>
+
+            <div class="card">
+                <h3>{{ total_reviews }}</h3>
+                <p>Reviews</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

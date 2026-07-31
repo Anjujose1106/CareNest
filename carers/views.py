@@ -1,9 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Carer
+from .models import Carer, CarerApplication
 from .forms import CarerApplicationForm
 from django.contrib.auth.decorators import login_required
 from datetime import date, datetime, timedelta
 from bookings.models import Booking
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User
+from bookings.models import Booking
+from reviews.models import Review
 
 def carer_list(request):
 
@@ -140,5 +144,46 @@ def carer_dashboard(request):
             'past_bookings': past_bookings,
             'total_hours': round(total_hours, 2),
             'estimated_earnings': round(estimated_earnings, 2),
+        }
+    )
+@user_passes_test(lambda u: u.is_superuser)
+def admin_dashboard(request):
+
+    total_carers = Carer.objects.count()
+
+    total_families = User.objects.filter(
+        is_superuser=False
+    ).count()
+
+    total_bookings = Booking.objects.count()
+
+    pending_applications = CarerApplication.objects.filter(
+        status='pending'
+    ).count()
+
+    total_reviews = Review.objects.count()
+
+    return render(
+        request,
+        'carers/admin_dashboard.html',
+        {
+            'total_carers': total_carers,
+            'total_families': total_families,
+            'total_bookings': total_bookings,
+            'pending_applications': pending_applications,
+            'total_reviews': total_reviews,
+        }
+    )
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_applications(request):
+
+    applications = CarerApplication.objects.all().order_by('-submitted_at')
+
+    return render(
+        request,
+        'carers/admin_applications.html',
+        {
+            'applications': applications
         }
     )

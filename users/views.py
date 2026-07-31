@@ -39,6 +39,9 @@ def custom_logout(request):
 
 @login_required
 def dashboard_redirect(request):
+    
+    if request.user.is_superuser:        
+        return redirect('/admin-dashboard/')
 
     if hasattr(request.user, 'carer_profile'):
         return redirect('/carer-dashboard/')
