@@ -213,3 +213,57 @@ def reject_application(request, application_id):
     application.save()
 
     return redirect('/admin-dashboard/applications/')
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_bookings(request):
+
+    bookings = Booking.objects.all().order_by('-created_at')
+
+    return render(
+        request,
+        'carers/admin_bookings.html',
+        {
+            'bookings': bookings
+        }
+    )
+
+@user_passes_test(lambda u: u.is_superuser)
+def confirm_booking(request, booking_id):
+
+    booking = get_object_or_404(
+        Booking,
+        id=booking_id
+    )
+
+    booking.status = 'confirmed'
+    booking.save()
+
+    return redirect('/admin-dashboard/bookings/')
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def complete_booking(request, booking_id):
+
+    booking = get_object_or_404(
+        Booking,
+        id=booking_id
+    )
+
+    booking.status = 'completed'
+    booking.save()
+
+    return redirect('/admin-dashboard/bookings/')
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def cancel_booking(request, booking_id):
+
+    booking = get_object_or_404(
+        Booking,
+        id=booking_id
+    )
+
+    booking.status = 'cancelled'
+    booking.save()
+
+    return redirect('/admin-dashboard/bookings/')

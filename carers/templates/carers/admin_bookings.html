@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bookings</title>
+</head>
+<body>
+
+<h1>Admin Bookings Page</h1>
+
+{% for booking in bookings %}
+
+    <hr>
+
+    <h3>{{ booking.client_name }}</h3>
+
+    <p>Carer: {{ booking.carer.full_name }}</p>
+
+    <p>Status: {{ booking.get_status_display }}</p>
+
+{% endfor %}
+
+</body>
+</html>
