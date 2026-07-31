@@ -44,7 +44,7 @@
         margin-bottom:30px;
     }
 
-    .calendar-day{
+        .calendar-day{
             height:60px;
             background:white;
             border-radius:12px;
@@ -55,15 +55,18 @@
             box-shadow:0 4px 12px rgba(0,0,0,0.08);
         }
 
-    .calendar-day:hover{
-        background:#14b8a6;
-        color:white;
-    }
+        .calendar-day:hover{
+                background:#14b8a6;
+                color:white;
+        }
 
-    .calendar-day.available{
-        background:#dcfce7;
-        border:2px solid #16a34a;
-    }
+        .calendar-day.available{
+            background:#dcfce7;
+            border:2px solid #16a34a;
+            color:#166534;
+            font-weight:700;
+        }
+
 
         .sidebar {
             background: #0f172a;
@@ -560,6 +563,7 @@
            <h3>Availability Calendar</h3>
 
 <h3>{{ month_name }} {{ year }}</h3>
+{{ availability_dates|json_script:"availability-data" }}
 
 <div class="calendar-nav">
 
@@ -589,15 +593,17 @@
 
         {% for day in week %}
 
-            <div class="calendar-day"
-                data-year="{{ year }}"
-                data-month="{{ month }}"
-                data-day="{{ day }}"
-                onclick="selectCalendarDay(this)">
-                {% if day %}
-                    {{ day }}
-                {% endif %}
-            </div>
+        <div class="calendar-day"
+            data-year="{{ year }}"
+            data-month="{{ month }}"
+            data-day="{{ day }}"
+            onclick="selectCalendarDay(this)">
+
+            {% if day %}
+                {{ day }}
+            {% endif %}
+
+        </div>
 
         {% endfor %}
 
@@ -677,6 +683,30 @@
                 <button class="save-btn" type="submit">
                     Save Availability
                 </button>
+                <h3>My Saved Availability</h3>
+
+{% for availability in availabilities %}
+
+    <div class="booking-card">
+
+        <strong>
+            {{ availability.date }}
+        </strong>
+
+        <p>
+            {{ availability.start_time }}
+            -
+            {{ availability.end_time }}
+        </p>
+
+    </div>
+
+{% empty %}
+
+    <p>No availability saved yet.</p>
+
+{% endfor %}
+                
 
         </form>
 
@@ -837,7 +867,46 @@ window.addEventListener("load", function () {
 });
 
 </script>
+<script>
 
+const currentMonth = "{{ month }}";
+const currentYear = "{{ year }}";
+
+const availabilityDates =
+    JSON.parse(
+        document.getElementById(
+            "availability-data"
+        ).textContent
+    );
+
+document.querySelectorAll(".calendar-day")
+    .forEach(day => {
+
+        let dayNumber = day.innerText.trim();
+
+        if (!dayNumber) return;
+
+        dayNumber = dayNumber.padStart(2, "0");
+
+        let month =
+            String(currentMonth).padStart(2, "0");
+
+        let fullDate =
+            currentYear +
+            "-" +
+            month +
+            "-" +
+            dayNumber;
+
+        if (availabilityDates.includes(fullDate)) {
+
+            day.classList.add("available");
+
+        }
+
+    });
+
+</script>
 
 </body>
 </html>

@@ -145,4 +145,4 @@ class Availability(models.Model):
     )
 
     def __str__(self):
-        return f"{self.carer.full_name} - {self.day}"
+        return f"{self.carer.full_name} - {self.date} ({self.start_time} - {self.end_time})"

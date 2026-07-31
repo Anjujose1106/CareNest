@@ -109,10 +109,17 @@ def carer_dashboard(request):
     print("POST RECEIVED")
 
     availabilities = Availability.objects.filter(
-        carer=carer
+       carer=carer
     ).order_by('date')
 
-    
+    availability_dates = []
+
+    for availability in availabilities:
+        availability_dates.append(
+            availability.date.strftime('%Y-%m-%d')
+        )
+
+        
     today = date.today()
 
     upcoming_bookings = Booking.objects.filter(
@@ -142,9 +149,9 @@ def carer_dashboard(request):
         if end_datetime < start_datetime:
             end_datetime += timedelta(days=1)
 
-        duration = end_datetime - start_datetime
+    duration = end_datetime - start_datetime
 
-        total_hours += duration.total_seconds() / 3600
+    total_hours += duration.total_seconds() / 3600
 
     estimated_earnings = total_hours * float(carer.hourly_rate)
 
@@ -186,7 +193,12 @@ def carer_dashboard(request):
             'past_bookings': past_bookings,
             'total_hours': round(total_hours, 2),
             'estimated_earnings': round(estimated_earnings, 2),
+            'calendar': cal,
+            'month': month,
+            'year': year,
+            'month_name': month_name,
             'availabilities': availabilities,
+            'availability_dates': availability_dates,
             'calendar': cal,
             'month': month,
             'year': year,
