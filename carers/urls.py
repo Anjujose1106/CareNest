@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, carer_list, carer_detail, join,apply_carer, join_success, carer_dashboard, admin_dashboard, admin_applications, approve_application, reject_application, admin_bookings, confirm_booking, complete_booking, cancel_booking
+from .views import home, carer_list, carer_detail, join,apply_carer, join_success, carer_dashboard, admin_dashboard, admin_applications, approve_application, reject_application, admin_bookings, confirm_booking, complete_booking, cancel_booking, admin_calendar
 
 urlpatterns = [
     path('', home, name='home'),
@@ -52,5 +52,10 @@ path(
     'admin-dashboard/bookings/<int:booking_id>/cancel/',
     cancel_booking,
     name='cancel_booking'
+),
+path(
+    'admin-dashboard/calendar/',
+    admin_calendar,
+    name='admin_calendar'
 ),
 ]

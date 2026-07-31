@@ -114,3 +114,35 @@ class CarerApplication(models.Model):
     
     def __str__(self):
         return self.full_name
+
+class Availability(models.Model):
+
+    DAYS = (
+        ('Monday', 'Monday'),
+        ('Tuesday', 'Tuesday'),
+        ('Wednesday', 'Wednesday'),
+        ('Thursday', 'Thursday'),
+        ('Friday', 'Friday'),
+        ('Saturday', 'Saturday'),
+        ('Sunday', 'Sunday'),
+    )
+
+    carer = models.ForeignKey(
+        Carer,
+        on_delete=models.CASCADE,
+        related_name='availabilities'
+    )
+
+    
+    date = models.DateField()
+
+    start_time = models.TimeField()
+
+    end_time = models.TimeField()
+
+    is_available = models.BooleanField(
+        default=True
+    )
+
+    def __str__(self):
+        return f"{self.carer.full_name} - {self.day}"

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Carer, CarerApplication
+from .models import Carer, CarerApplication, Availability
 from .forms import CarerApplicationForm
 from django.contrib.auth.decorators import login_required
 from datetime import date, datetime, timedelta
@@ -8,6 +8,9 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from bookings.models import Booking
 from reviews.models import Review
+from datetime import date, timedelta
+import calendar
+from datetime import date
 
 def carer_list(request):
 
@@ -96,7 +99,20 @@ def carer_dashboard(request):
             request,
             'carers/not_a_carer.html'
         )
+    if request.method == "POST":
+        Availability.objects.create(
+            carer=carer,
+            date=request.POST["date"],
+            start_time=request.POST["start_time"],
+            end_time=request.POST["end_time"]
+        )
+    print("POST RECEIVED")
 
+    availabilities = Availability.objects.filter(
+        carer=carer
+    ).order_by('date')
+
+    
     today = date.today()
 
     upcoming_bookings = Booking.objects.filter(
@@ -107,7 +123,7 @@ def carer_dashboard(request):
     past_bookings = Booking.objects.filter(
     carer=carer,
     status='completed'
-).order_by('-booking_date')
+    ).order_by('-booking_date')
 
     total_hours = 0
 
@@ -134,6 +150,32 @@ def carer_dashboard(request):
 
     next_booking = upcoming_bookings.first()
 
+    today = date.today()
+
+    month = request.GET.get("month")
+    year = request.GET.get("year")
+
+    if month is None:
+        month = today.month
+
+    if year is None:
+        year = today.year
+
+    month = int(month)
+    year = int(year)
+
+    if month > 12:
+        month = 1
+        year += 1
+
+    if month < 1:
+        month = 12
+        year -= 1
+
+    cal = calendar.monthcalendar(year, month)
+
+    month_name = calendar.month_name[month]
+
     return render(
         request,
         'carers/carer_dashboard.html',
@@ -144,8 +186,13 @@ def carer_dashboard(request):
             'past_bookings': past_bookings,
             'total_hours': round(total_hours, 2),
             'estimated_earnings': round(estimated_earnings, 2),
+            'availabilities': availabilities,
+            'calendar': cal,
+            'month': month,
+            'year': year,
+            'month_name': month_name,
         }
-    )
+   )
 @user_passes_test(lambda u: u.is_superuser)
 def admin_dashboard(request):
 
@@ -217,13 +264,30 @@ def reject_application(request, application_id):
 @user_passes_test(lambda u: u.is_superuser)
 def admin_bookings(request):
 
-    bookings = Booking.objects.all().order_by('-created_at')
+    pending_bookings = Booking.objects.filter(
+        status='pending'
+    ).order_by('booking_date')
+
+    confirmed_bookings = Booking.objects.filter(
+        status='confirmed'
+    ).order_by('booking_date')
+
+    completed_bookings = Booking.objects.filter(
+        status='completed'
+    ).order_by('-booking_date')
+
+    cancelled_bookings = Booking.objects.filter(
+        status='cancelled'
+    ).order_by('-booking_date')
 
     return render(
         request,
         'carers/admin_bookings.html',
         {
-            'bookings': bookings
+            'pending_bookings': pending_bookings,
+            'confirmed_bookings': confirmed_bookings,
+            'completed_bookings': completed_bookings,
+            'cancelled_bookings': cancelled_bookings,
         }
     )
 
@@ -267,3 +331,35 @@ def cancel_booking(request, booking_id):
     booking.save()
 
     return redirect('/admin-dashboard/bookings/')
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_calendar(request):
+
+    today = date.today()
+
+    week_days = []
+
+    for i in range(7):
+
+        current_day = today + timedelta(days=i)
+
+        day_bookings = Booking.objects.filter(
+            booking_date=current_day
+        ).order_by('start_time')
+
+        week_days.append({
+            'date': current_day,
+            'bookings': day_bookings
+        })
+
+    return render(
+    request,
+    'carers/admin_calendar.html',
+    {
+        'week_days': week_days,
+        'pending_count': Booking.objects.filter(status='pending').count(),
+        'confirmed_count': Booking.objects.filter(status='confirmed').count(),
+        'completed_count': Booking.objects.filter(status='completed').count(),
+        'cancelled_count': Booking.objects.filter(status='cancelled').count(),
+    }
+)

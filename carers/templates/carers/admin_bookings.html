@@ -1,23 +1,410 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bookings</title>
+    <title>Bookings | CareNest Admin</title>
+
+    <style>
+
+        body{
+            margin:0;
+            font-family:"Segoe UI",sans-serif;
+            background:#f8fafc;
+        }
+        .booking-card{
+            border-left:6px solid #14b8a6;
+        }
+
+        .completed-card{
+            border-left:6px solid #2563eb;
+        }
+
+        .cancelled-card{
+            border-left:6px solid #ef4444;
+        }
+
+        .layout{
+            display:grid;
+            grid-template-columns:280px 1fr;
+            min-height:100vh;
+        }
+
+        .sidebar{
+            background:#0f172a;
+            color:white;
+            padding:30px;
+        }
+
+        .sidebar h2{
+            margin-bottom:30px;
+        }
+
+        .sidebar a{
+            display:block;
+            color:white;
+            text-decoration:none;
+            padding:14px;
+            margin-bottom:12px;
+            border-radius:10px;
+        }
+
+        .sidebar a:hover{
+            background:#14b8a6;
+        }
+
+        .main{
+            padding:40px;
+        }
+
+        .tab-button{
+            padding:12px 20px;
+            border:none;
+            border-radius:12px;
+            background:#e2e8f0;
+            margin-right:10px;
+            cursor:pointer;
+            font-weight:600;
+        }
+
+        .tab-button.active{
+            background:#14b8a6;
+            color:white;
+        }
+
+        .tab-content{
+            display:none;
+            margin-top:30px;
+        }
+
+        .tab-content.active{
+            display:block;
+        }
+
+        .booking-card{
+            background:white;
+            padding:25px;
+            border-radius:20px;
+            margin-bottom:20px;
+            box-shadow:0 12px 35px rgba(0,0,0,0.08);
+        }
+
+        .booking-card h2{
+            margin-bottom:15px;
+        }
+
+        .booking-card p{
+            margin-bottom:8px;
+            color:#475569;
+        }
+
+        .status{
+            display:inline-block;
+            padding:8px 16px;
+            border-radius:999px;
+            font-weight:bold;
+            margin-top:10px;
+        }
+
+        .pending{
+            background:#fef3c7;
+            color:#92400e;
+        }
+
+        .confirmed{
+            background:#dcfce7;
+            color:#166534;
+        }
+
+        .completed{
+            background:#dbeafe;
+            color:#1d4ed8;
+        }
+
+        .cancelled{
+            background:#fee2e2;
+            color:#991b1b;
+        }
+
+        .actions{
+            margin-top:20px;
+        }
+
+        .btn{
+            display:inline-block;
+            padding:10px 18px;
+            border-radius:10px;
+            text-decoration:none;
+            font-weight:600;
+            margin-right:10px;
+            color:white;
+        }
+
+        .confirm{
+            background:#14b8a6;
+        }
+
+        .complete{
+            background:#2563eb;
+        }
+
+        .cancel{
+            background:#ef4444;
+        }
+
+    </style>
+
 </head>
+
 <body>
 
-<h1>Admin Bookings Page</h1>
+<div class="layout">
 
-{% for booking in bookings %}
+    <div class="sidebar">
 
-    <hr>
+        <h2>CareNest Admin</h2>
 
-    <h3>{{ booking.client_name }}</h3>
+        <a href="/admin-dashboard/">
+            Overview
+        </a>
 
-    <p>Carer: {{ booking.carer.full_name }}</p>
+        <a href="/admin-dashboard/applications/">
+            Applications
+        </a>
 
-    <p>Status: {{ booking.get_status_display }}</p>
+        <a href="/admin-dashboard/bookings/">
+            Bookings
+        </a>
+        <a href="/admin-dashboard/calendar/">
+            Calendar
+        </a>
 
-{% endfor %}
+        <a href="/admin-dashboard/carers/">
+            Carers
+        </a>
+
+        <a href="/admin-dashboard/families/">
+            Families
+        </a>
+
+        <a href="/admin-dashboard/reviews/">
+            Reviews
+        </a>
+
+        <a href="/logout/">
+            Logout
+        </a>
+
+    </div>
+
+    <div class="main">
+
+        <h1>Bookings Management</h1>
+
+        <br>
+
+        <button class="tab-button active"
+        onclick="showTab('pending', this)">
+            Pending ({{ pending_bookings|length }})
+        </button>
+
+        <button class="tab-button"
+        onclick="showTab('confirmed', this)">
+            Confirmed ({{ confirmed_bookings|length }})
+        </button>
+
+        <button class="tab-button"
+        onclick="showTab('completed', this)">
+            Completed ({{ completed_bookings|length }})
+        </button>
+
+        <button class="tab-button"
+        onclick="showTab('cancelled', this)">
+            Cancelled ({{ cancelled_bookings|length }})
+        </button>
+
+        <!-- Pending -->
+
+        <div id="pending" class="tab-content active">
+
+            {% for booking in pending_bookings %}
+
+                <div class="booking-card">
+
+                    <h2>{{ booking.client_name }}</h2>
+                    <p>
+                        <strong>Needs Action:</strong>
+                        Admin review required
+                    </p>
+
+                    <p><strong>Carer:</strong> {{ booking.carer.full_name }}</p>
+
+                    <p><strong>Date:</strong> {{ booking.booking_date }}</p>
+
+                    <p><strong>Time:</strong> {{ booking.start_time }} - {{ booking.end_time }}</p>
+
+                    <span class="status pending">
+                        Pending
+                    </span>
+
+                    <div class="actions">
+
+                        <a href="/admin-dashboard/bookings/{{ booking.id }}/confirm/" class="btn confirm">
+                            Confirm
+                        </a>
+
+                        <a href="/admin-dashboard/bookings/{{ booking.id }}/cancel/" class="btn cancel">
+                            Cancel
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <p>No pending bookings.</p>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- Confirmed -->
+
+        <div id="confirmed" class="tab-content">
+
+            {% for booking in confirmed_bookings %}
+
+                <div class="booking-card">
+
+                    <h2>{{ booking.client_name }}</h2>
+
+                    <p><strong>Carer:</strong> {{ booking.carer.full_name }}</p>
+
+                    <p><strong>Date:</strong> {{ booking.booking_date }}</p>
+
+                    <span class="status confirmed">
+                        Confirmed
+                    </span>
+
+                    <div class="actions">
+
+                        <a href="/admin-dashboard/bookings/{{ booking.id }}/complete/" class="btn complete">
+                            Complete
+                        </a>
+
+                        <a href="/admin-dashboard/bookings/{{ booking.id }}/cancel/" class="btn cancel">
+                            Cancel
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <p>No confirmed bookings.</p>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- Completed -->
+
+        <div id="completed" class="tab-content">
+
+            {% for booking in completed_bookings %}
+
+                <div class="booking-card">
+
+                    <h2>{{ booking.client_name }}</h2>
+
+                    <p><strong>Carer:</strong> {{ booking.carer.full_name }}</p>
+
+                    <p><strong>Date:</strong> {{ booking.booking_date }}</p>
+
+                    <span class="status completed">
+                        Completed
+                    </span>
+
+                </div>
+
+            {% empty %}
+
+                <p>No completed bookings.</p>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- Cancelled -->
+
+        <div id="cancelled" class="tab-content">
+
+            {% for booking in cancelled_bookings %}
+
+                <div class="booking-card">
+
+                   <h2>{{ booking.client_name }}</h2>
+
+                <p>
+                    <strong>Email:</strong>
+                    {{ booking.client_email }}
+                </p>
+
+                <p>
+                    <strong>Carer:</strong>
+                    {{ booking.carer.full_name }}
+                </p>
+
+                <p>
+                    <strong>Care Type:</strong>
+                    {{ booking.get_care_type_display }}
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    {{ booking.booking_date }}
+                </p>
+
+                <p>
+                    <strong>Time:</strong>
+                    {{ booking.start_time }} - {{ booking.end_time }}
+                </p>
+                    </span>
+
+                </div>
+
+            {% empty %}
+
+                <p>No cancelled bookings.</p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function showTab(tabId, button){
+
+    const tabs = document.querySelectorAll('.tab-content');
+    const buttons = document.querySelectorAll('.tab-button');
+
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+    });
+
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    document.getElementById(tabId).classList.add('active');
+    button.classList.add('active');
+}
+
+</script>
 
 </body>
 </html>
