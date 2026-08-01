@@ -120,6 +120,12 @@
             padding: 55px;
         }
 
+        .unavailable-day{
+            background:#fee2e2;
+            border:2px solid #dc2626;
+            color:#991b1b;
+            font-weight:bold;
+        }
         .top-header {
             text-align: center;
             margin-bottom: 45px;
@@ -563,7 +569,8 @@
            <h3>Availability Calendar</h3>
 
 <h3>{{ month_name }} {{ year }}</h3>
-{{ availability_dates|json_script:"availability-data" }}
+{{ available_dates|json_script:"available-dates" }}
+{{ unavailable_dates|json_script:"unavailable-dates" }}
 
 <div class="calendar-nav">
 
@@ -677,6 +684,23 @@
 
                         </select>
                     </div>
+
+                </div>
+                <div class="form-group">
+
+                    <label>Status</label>
+
+                    <select name="status">
+
+                        <option value="available">
+                            Available
+                        </option>
+
+                        <option value="unavailable">
+                            Unavailable
+                        </option>
+
+                    </select>
 
                 </div>
 
@@ -872,10 +896,17 @@ window.addEventListener("load", function () {
 const currentMonth = "{{ month }}";
 const currentYear = "{{ year }}";
 
-const availabilityDates =
+const availableDates =
     JSON.parse(
         document.getElementById(
-            "availability-data"
+            "available-dates"
+        ).textContent
+    );
+
+const unavailableDates =
+    JSON.parse(
+        document.getElementById(
+            "unavailable-dates"
         ).textContent
     );
 
@@ -898,7 +929,12 @@ document.querySelectorAll(".calendar-day")
             "-" +
             dayNumber;
 
-        if (availabilityDates.includes(fullDate)) {
+        if (unavailableDates.includes(fullDate)) {
+
+            day.classList.add("unavailable-day");
+
+        }
+        else if (availableDates.includes(fullDate)) {
 
             day.classList.add("available");
 

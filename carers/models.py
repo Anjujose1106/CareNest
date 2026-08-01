@@ -126,6 +126,16 @@ class Availability(models.Model):
         ('Saturday', 'Saturday'),
         ('Sunday', 'Sunday'),
     )
+    STATUS_CHOICES = [
+        ('available', 'Available'),
+        ('unavailable', 'Unavailable'),
+    ]
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='available'
+    )
 
     carer = models.ForeignKey(
         Carer,

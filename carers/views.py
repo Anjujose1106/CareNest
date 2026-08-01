@@ -100,24 +100,44 @@ def carer_dashboard(request):
             'carers/not_a_carer.html'
         )
     if request.method == "POST":
-        Availability.objects.create(
-            carer=carer,
-            date=request.POST["date"],
-            start_time=request.POST["start_time"],
-            end_time=request.POST["end_time"]
-        )
+        status = request.POST["status"]
+
+        if status == "unavailable":
+            Availability.objects.create(
+                carer=carer,
+                date=request.POST["date"],
+                start_time="00:00",
+                end_time="00:00",
+                status=status
+            )
+
+        else:
+
+            Availability.objects.create(
+                carer=carer,
+                date=request.POST["date"],
+                start_time=request.POST["start_time"],
+                end_time=request.POST["end_time"],
+                status=status
+            )
     print("POST RECEIVED")
 
     availabilities = Availability.objects.filter(
        carer=carer
     ).order_by('date')
 
-    availability_dates = []
+    available_dates = []
+    unavailable_dates = []
 
     for availability in availabilities:
-        availability_dates.append(
-            availability.date.strftime('%Y-%m-%d')
-        )
+
+        date_string = availability.date.strftime('%Y-%m-%d')
+
+        if availability.status == 'available':
+            available_dates.append(date_string)
+
+        else:
+            unavailable_dates.append(date_string)
 
         
     today = date.today()
@@ -198,11 +218,12 @@ def carer_dashboard(request):
             'year': year,
             'month_name': month_name,
             'availabilities': availabilities,
-            'availability_dates': availability_dates,
             'calendar': cal,
             'month': month,
             'year': year,
             'month_name': month_name,
+            'available_dates': available_dates,
+            'unavailable_dates': unavailable_dates,
         }
    )
 @user_passes_test(lambda u: u.is_superuser)
