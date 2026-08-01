@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Carer, CarerApplication, Availability
-from .forms import CarerApplicationForm
+from .models import Carer, CarerApplication, Availability, CarerDocument
+from .forms import CarerApplicationForm, CarerDocumentForm
 from django.contrib.auth.decorators import login_required
 from datetime import date, datetime, timedelta
 from bookings.models import Booking
@@ -10,7 +10,7 @@ from bookings.models import Booking
 from reviews.models import Review
 from datetime import date, timedelta
 import calendar
-from datetime import date
+from datetime import date, datetime, timedelta
 
 def carer_list(request):
 
@@ -100,31 +100,74 @@ def carer_dashboard(request):
             'carers/not_a_carer.html'
         )
     if request.method == "POST":
-        status = request.POST["status"]
 
-        if status == "unavailable":
-            Availability.objects.create(
-                carer=carer,
-                date=request.POST["date"],
-                start_time="00:00",
-                end_time="00:00",
-                status=status
+        if "document_name" in request.POST:
+
+            form = CarerDocumentForm(
+                request.POST,
+                request.FILES
             )
+
+            if form.is_valid():
+
+                document = form.save(commit=False)
+
+                existing = CarerDocument.objects.filter(
+                    carer=carer,
+                    document_name=document.document_name
+                ).first()
+
+                if existing:
+
+                    existing.issue_date = document.issue_date
+                    existing.expiry_date = document.expiry_date
+                    existing.file = document.file
+                    existing.status = "pending"
+                    existing.save()
+
+                else:
+
+                    document.carer = carer
+                    document.save()
+
+                return redirect("/carer-dashboard/#documents")
 
         else:
 
-            Availability.objects.create(
-                carer=carer,
-                date=request.POST["date"],
-                start_time=request.POST["start_time"],
-                end_time=request.POST["end_time"],
-                status=status
-            )
+            status = request.POST["status"]
+
+            if status == "unavailable":
+
+                Availability.objects.create(
+                    carer=carer,
+                    date=request.POST["date"],
+                    start_time="00:00",
+                    end_time="00:00",
+                    status=status
+                )
+                return redirect("/carer-dashboard/#availability")
+
+            else:
+
+                Availability.objects.create(
+                    carer=carer,
+                    date=request.POST["date"],
+                    start_time=request.POST["start_time"],
+                    end_time=request.POST["end_time"],
+                    status=status
+                )
+                return redirect("/carer-dashboard/#availability")
     print("POST RECEIVED")
 
     availabilities = Availability.objects.filter(
        carer=carer
     ).order_by('date')
+
+    documents = CarerDocument.objects.filter(
+        carer=carer
+    ).order_by('-uploaded_at')
+
+    document_form = CarerDocumentForm()
 
     available_dates = []
     unavailable_dates = []
@@ -224,8 +267,49 @@ def carer_dashboard(request):
             'month_name': month_name,
             'available_dates': available_dates,
             'unavailable_dates': unavailable_dates,
+            'documents': documents,
+            'document_form': document_form,
+            'today': date.today(),
         }
    )
+
+@login_required
+def upload_document(request):
+
+    carer = getattr(request.user, 'carer_profile', None)
+
+    if carer is None:
+        return render(
+            request,
+            'carers/not_a_carer.html'
+        )
+
+    if request.method == 'POST':
+
+        form = CarerDocumentForm(
+            request.POST,
+            request.FILES
+        )
+
+        if form.is_valid():
+
+            document = form.save(commit=False)
+            document.carer = carer
+            document.save()
+
+            return redirect('/carer-dashboard/#documents')
+
+    else:
+        form = CarerDocumentForm()
+
+    return render(
+        request,
+        'carers/upload_document.html',
+        {
+            'form': form
+        }
+    )
+
 @user_passes_test(lambda u: u.is_superuser)
 def admin_dashboard(request):
 

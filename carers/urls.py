@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, carer_list, carer_detail, join,apply_carer, join_success, carer_dashboard, admin_dashboard, admin_applications, approve_application, reject_application, admin_bookings, confirm_booking, complete_booking, cancel_booking, admin_calendar
+from .views import home, carer_list, carer_detail, join,apply_carer, join_success, carer_dashboard, admin_dashboard, admin_applications, approve_application, reject_application, admin_bookings, confirm_booking, complete_booking, cancel_booking, admin_calendar, upload_document
 
 urlpatterns = [
     path('', home, name='home'),
@@ -10,52 +10,57 @@ urlpatterns = [
     path('join/success/', join_success, name='join_success'),
     path('carer-dashboard/', carer_dashboard, name='carer_dashboard'),
     path(
+        'upload-document/',
+        upload_document,
+        name='upload_document'
+    ),
+    path(
         'admin-dashboard/',
         admin_dashboard,
         name='admin_dashboard'
     ),
-path(
-    'admin-dashboard/applications/',
-    admin_applications,
-    name='admin_applications'
-),
-path(
-    'admin-dashboard/applications/<int:application_id>/approve/',
-    approve_application,
-    name='approve_application'
-),
+    path(
+        'admin-dashboard/applications/',
+        admin_applications,
+        name='admin_applications'
+    ),
+    path(
+        'admin-dashboard/applications/<int:application_id>/approve/',
+        approve_application,
+        name='approve_application'
+    ),
 
-path(
-    'admin-dashboard/applications/<int:application_id>/reject/',
-    reject_application,
-    name='reject_application'
-),
-path(
-    'admin-dashboard/bookings/',
-    admin_bookings,
-    name='admin_bookings'
-),
+    path(
+        'admin-dashboard/applications/<int:application_id>/reject/',
+        reject_application,
+        name='reject_application'
+    ),
+    path(
+        'admin-dashboard/bookings/',
+        admin_bookings,
+        name='admin_bookings'
+    ),
 
-path(
-    'admin-dashboard/bookings/<int:booking_id>/confirm/',
-    confirm_booking,
-    name='confirm_booking'
-),
+    path(
+        'admin-dashboard/bookings/<int:booking_id>/confirm/',
+        confirm_booking,
+        name='confirm_booking'
+    ),
 
-path(
-    'admin-dashboard/bookings/<int:booking_id>/complete/',
-    complete_booking,
-    name='complete_booking'
-),
+    path(
+        'admin-dashboard/bookings/<int:booking_id>/complete/',
+        complete_booking,
+        name='complete_booking'
+    ),
 
-path(
-    'admin-dashboard/bookings/<int:booking_id>/cancel/',
-    cancel_booking,
-    name='cancel_booking'
-),
-path(
-    'admin-dashboard/calendar/',
-    admin_calendar,
-    name='admin_calendar'
-),
-]
+    path(
+        'admin-dashboard/bookings/<int:booking_id>/cancel/',
+        cancel_booking,
+        name='cancel_booking'
+    ),
+    path(
+        'admin-dashboard/calendar/',
+        admin_calendar,
+        name='admin_calendar'
+    ),
+    ]

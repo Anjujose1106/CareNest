@@ -156,3 +156,65 @@ class Availability(models.Model):
 
     def __str__(self):
         return f"{self.carer.full_name} - {self.date} ({self.start_time} - {self.end_time})"
+
+class CarerDocument(models.Model):
+
+    DOCUMENT_CHOICES = (
+        ('DBS Certificate', 'DBS Certificate'),
+        ('Right to Work', 'Right to Work'),
+        ('Public Liability Insurance', 'Public Liability Insurance'),
+        ('First Aid', 'First Aid'),
+        ('Moving & Handling', 'Moving & Handling'),
+        ('Safeguarding Adults', 'Safeguarding Adults'),
+        ('Medication Administration', 'Medication Administration'),
+        ('Dementia Awareness', 'Dementia Awareness'),
+        ('Infection Control', 'Infection Control'),
+        ('Autism Awareness', 'Autism Awareness'),
+        ('Care Certificate', 'Care Certificate'),
+        ('NVQ Level 2', 'NVQ Level 2'),
+        ('NVQ Level 3', 'NVQ Level 3'),
+    )
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    )
+    
+
+    carer = models.ForeignKey(
+        Carer,
+        on_delete=models.CASCADE,
+        related_name='documents'
+    )
+
+    document_name = models.CharField(
+        max_length=200,
+        null=True,
+        blank=True
+    )
+
+    issue_date = models.DateField(
+        null=True,        blank=True
+    )
+
+    expiry_date = models.DateField(
+        null=True,
+        blank=True
+    )
+
+    file = models.FileField(
+        upload_to='carer_documents/'
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
+
+    uploaded_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return f"{self.carer.full_name} - {self.document_name}"

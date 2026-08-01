@@ -141,7 +141,6 @@ def create_booking(request, carer_id):
             client_email=request.POST["client_email"],
             carer=carer,
             care_type=request.POST["care_type"],
-            booked_dates=booked_dates,
             booking_date=booking_date,
             start_time=start_time,
             end_time=end_time,

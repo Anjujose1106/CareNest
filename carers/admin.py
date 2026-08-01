@@ -1,9 +1,9 @@
 from django.contrib import admin
 from .models import Carer, CarerApplication
 from .models import Availability
+from .models import CarerDocument
 
 admin.site.register(Availability)
-
 
 @admin.register(Carer)
 class CarerAdmin(admin.ModelAdmin):
@@ -52,3 +52,22 @@ class CarerApplicationAdmin(admin.ModelAdmin):
         'phone_number',
         'postcode',
     )
+
+@admin.register(CarerDocument)
+class CarerDocumentAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'carer',
+        'document_name',
+        'status',
+        'uploaded_at',
+    )
+
+    list_filter = (
+        'status',
+    )
+
+    search_fields = (
+        'carer__full_name',
+        'document_name',
+    )  

@@ -370,6 +370,10 @@
             Availability
         </button>
 
+        <button class="tab-button" onclick="showTab('documents', this)">
+            Documents
+        </button>
+
         <button class="tab-button" onclick="showTab('past', this)">
             Past Activity
         </button>
@@ -378,7 +382,7 @@
             Earnings
         </button>
 
-        <a href="/logout/">Logout</a>
+        <a href="/logout/" class="tab-button">Logout</a>
 
     </aside>
 
@@ -472,8 +476,12 @@
                 </div>
 
             {% endif %}
+        
+        
 
         </section>
+    
+        
 
         <section id="next-shift" class="tab-content">
 
@@ -739,6 +747,98 @@
 
         </section>
 
+        <section id="documents" class="tab-content">
+
+    <h2 class="section-title">
+        Verification Documents
+    </h2>
+
+    <div class="booking-card">
+
+       <form method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            {{ document_form.as_p }}
+
+            <button type="submit" class="save-btn">
+                Upload Certificate
+            </button>
+
+        </form>
+        <br><br>
+
+        {% if documents %}
+
+            {% for document in documents %}
+
+                <div class="booking-card">
+
+    <h3>{{ document.document_name }}</h3>
+
+    <p>
+        <strong>Issue Date:</strong>
+        {{ document.issue_date|date:"d/m/Y" }}
+    </p>
+
+    <p>
+        <strong>Expiry Date:</strong>
+        {{ document.expiry_date|date:"d/m/Y" }}
+    </p>
+    {% if document.expiry_date %}
+
+    {% if document.expiry_date <= today %}
+
+        <p style="color:red;font-weight:bold;">
+            ❌ Expired
+        </p>
+
+    {% elif document.expiry_date|timeuntil < "30 days" %}
+
+        <p style="color:orange;font-weight:bold;">
+            ⚠️ Expires Soon
+        </p>
+
+    {% else %}
+
+        <p style="color:green;font-weight:bold;">
+            ✅ Valid
+        </p>
+
+    {% endif %}
+
+{% endif %}
+   
+
+    <p>
+        <strong>Status:</strong>
+
+        {% if document.status == "approved" %}
+            ✅ Approved
+        {% elif document.status == "pending" %}
+            🟡 Pending Review
+        {% else %}
+            ❌ Rejected
+        {% endif %}
+
+    </p>
+
+</div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>
+                No documents uploaded yet.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
         <section id="past" class="tab-content">
 
             <h2 class="section-title">Past Activity</h2>
@@ -943,6 +1043,48 @@ document.querySelectorAll(".calendar-day")
     });
 
 </script>
+<script>
+window.addEventListener("load", function () {
 
+    if (window.location.hash === "#documents") {
+
+        document.querySelectorAll(".tab-content")
+            .forEach(tab => {
+                tab.classList.remove("active");
+            });
+
+        document.querySelectorAll(".tab-button")
+            .forEach(btn => {
+                btn.classList.remove("active");
+            });
+
+        document.getElementById("documents")
+            .classList.add("active");
+
+        document.querySelector(
+            '[onclick*="documents"]'
+        ).classList.add("active");
+    }
+    if (window.location.hash === "#availability") {
+
+        document.querySelectorAll(".tab-content")
+            .forEach(tab => {
+                tab.classList.remove("active");
+            });
+
+        document.querySelectorAll(".tab-button")
+            .forEach(btn => {
+                btn.classList.remove("active");
+            });
+
+        document.getElementById("availability")
+            .classList.add("active");
+
+        document.querySelector(
+            '[onclick*="availability"]'
+        ).classList.add("active");
+    }
+});
+</script>
 </body>
 </html>
