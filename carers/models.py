@@ -1,7 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+def document_upload_path(instance, filename):
 
+    extension = filename.split('.')[-1]
+
+    carer_name = instance.carer.full_name.replace(" ", "_")
+
+    doc_name = instance.document_name.replace(" ", "_")
+
+    return (
+        f"carer_documents/"
+        f"{carer_name}_{doc_name}.{extension}"
+    )
+    
 class Carer(models.Model):
     user = models.OneToOneField(
         User,
@@ -203,7 +215,7 @@ class CarerDocument(models.Model):
     )
 
     file = models.FileField(
-        upload_to='carer_documents/'
+        upload_to=document_upload_path
     )
 
     status = models.CharField(
@@ -218,3 +230,5 @@ class CarerDocument(models.Model):
 
     def __str__(self):
         return f"{self.carer.full_name} - {self.document_name}"
+    
+    

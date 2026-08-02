@@ -327,6 +327,18 @@ def admin_dashboard(request):
 
     total_reviews = Review.objects.count()
 
+    pending_documents = CarerDocument.objects.filter(
+        status='pending'
+    ).count()
+
+    expired_documents = CarerDocument.objects.filter(
+        expiry_date__lte=date.today()
+    ).count()
+
+    documents = CarerDocument.objects.all().order_by(
+        '-uploaded_at'
+    )[:5]   
+
     return render(
         request,
         'carers/admin_dashboard.html',
@@ -336,6 +348,9 @@ def admin_dashboard(request):
             'total_bookings': total_bookings,
             'pending_applications': pending_applications,
             'total_reviews': total_reviews,
+            'pending_documents': pending_documents,
+            'expired_documents': expired_documents,
+            'documents': documents,
         }
     )
 
@@ -480,3 +495,116 @@ def admin_calendar(request):
         'cancelled_count': Booking.objects.filter(status='cancelled').count(),
     }
 )
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_documents(request):
+
+    documents = CarerDocument.objects.all().order_by(
+        '-uploaded_at'
+    )
+
+    return render(
+        request,
+        'carers/admin_documents.html',
+        {
+            'documents': documents
+        }
+    )
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_carers(request):
+
+    carers = Carer.objects.all()
+
+    return render(
+        request,
+        'carers/admin_carers.html',
+        {
+            'carers': carers
+        }
+    )
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_carer_detail(request, carer_id):
+
+    carer = get_object_or_404(
+        Carer,
+        id=carer_id
+    )
+
+    documents = CarerDocument.objects.filter(
+    carer=carer
+    )
+
+    today = date.today()
+
+    for document in documents:
+
+        if document.expiry_date:
+
+            days_left = (
+                document.expiry_date - today
+            ).days
+
+            if days_left <= 0:
+
+                document.compliance = "expired"
+
+            elif days_left <= 30:
+
+                document.compliance = "expiring"
+
+            else:
+
+                document.compliance = "valid"
+
+        else:
+
+            document.compliance = "unknown"
+
+    bookings = Booking.objects.filter(
+        carer=carer
+    )
+
+    return render(
+        request,
+        'carers/admin_carer_detail.html',
+        {
+            'carer': carer,
+            'documents': documents,
+            'bookings': bookings,
+            'today': today
+        }
+    )
+
+@user_passes_test(lambda u: u.is_superuser)
+def approve_document(request, document_id):
+
+    document = get_object_or_404(
+        CarerDocument,
+        id=document_id
+    )
+
+    document.status = 'approved'
+    document.save()
+
+    return redirect(
+        '/admin-dashboard/carers/'
+        f'{document.carer.id}/'
+    )
+
+@user_passes_test(lambda u: u.is_superuser)
+def reject_document(request, document_id):
+
+    document = get_object_or_404(
+        CarerDocument,
+        id=document_id
+    )
+
+    document.status = 'rejected'
+    document.save()
+
+    return redirect(
+        '/admin-dashboard/carers/'
+        f'{document.carer.id}/'
+    )

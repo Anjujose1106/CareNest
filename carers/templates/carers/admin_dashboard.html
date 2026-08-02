@@ -85,7 +85,7 @@
 
         <a href="/admin-dashboard/calendar/">Calendar</a>
 
-        <a href="/admin/">Carers</a>
+        <a href="/admin-dashboard/carers/">Carers</a>
 
         <a href="/admin/">Families</a>
 
@@ -102,6 +102,16 @@
         <br>
 
         <div class="cards">
+
+            <div class="card">
+                <h3>{{ pending_documents }}</h3>
+                <p>Pending Documents</p>
+            </div>
+
+            <div class="card">
+                <h3>{{ expired_documents }}</h3>
+                <p>Expired Documents</p>
+            </div>
 
             <div class="card">
                 <h3>{{ total_carers }}</h3>
@@ -129,7 +139,40 @@
             </div>
 
         </div>
+        <br><br>
 
+<h2>Recent Documents</h2>
+
+{% for document in documents %}
+
+<div class="card" style="text-align:left;margin-top:20px;">
+
+    <h3 style="font-size:20px;">
+        {{ document.carer.full_name }}
+    </h3>
+
+    <p>
+        <strong>Certificate:</strong>
+        {{ document.document_name }}
+    </p>
+
+    <p>
+        <strong>Status:</strong>
+        {{ document.get_status_display }}
+    </p>
+
+    <p>
+        <strong>Expiry:</strong>
+        {{ document.expiry_date|date:"d/m/Y" }}
+    </p>
+
+</div>
+
+{% empty %}
+
+<p>No documents uploaded.</p>
+
+{% endfor %}
     </div>
 
 </div>

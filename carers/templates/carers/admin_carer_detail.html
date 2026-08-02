@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ carer.full_name }} | CareNest Admin</title>
+
+    <style>
+
+        body{
+            font-family:"Segoe UI",sans-serif;
+            background:#f8fafc;
+            margin:0;
+            padding:40px;
+        }
+
+        .card{
+            background:white;
+            padding:25px;
+            margin-bottom:20px;
+            border-radius:20px;
+            box-shadow:0 12px 35px rgba(0,0,0,0.08);
+        }
+
+        h1{
+            margin-bottom:30px;
+        }
+        .documents-table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:20px;
+        }
+        .card{
+            overflow-x:auto;
+        }
+
+        .documents-table th{
+            background:#14b8a6;
+            color:white;
+            padding: 16px;
+            text-align:left;
+        }
+
+        .documents-table td{
+            padding:12px;
+            border-bottom:1px solid #e2e8f0;
+        }
+
+        .documents-table tr:hover{
+            background:#f8fafc;
+        }
+
+        .documents-table th:nth-child(6),
+        .documents-table td:nth-child(6){
+            width:80px;
+            text-align:center;
+
+        }
+
+        .documents-table th:nth-child(7),
+        .documents-table td:nth-child(7){
+            white-space:nowrap;
+            text-align:center;
+        }
+
+        .view-btn{
+            background:#2563eb;
+            color:white;
+            padding:4px 8px;
+            font-size:14px;
+            border-radius:8px;
+            text-decoration:none;
+            font-weight:600;
+        }
+
+        .view-btn:hover{
+            background:#1d4ed8;
+        }
+        .approve-btn{
+            background:#16a34a;
+            color:white;
+            padding:4px 8px;
+            font-size:13px;
+            border-radius:8px;
+            text-decoration:none;
+            font-weight:600;
+            margin-right:8px;
+        }
+
+        .approve-btn:hover{
+            background:#15803d;
+        }
+
+        .reject-btn{
+            background:#dc2626;
+            color:white;
+            padding:4px 8px;
+            font-size:13px;
+            border-radius:8px;
+            text-decoration:none;
+            font-weight:600;
+        }
+
+        .reject-btn:hover{
+            background:#b91c1c;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<h1>{{ carer.full_name }}</h1>
+
+<div class="card">
+
+    <h2>Profile</h2>
+
+    <p>
+        <strong>Care Type:</strong>
+        {{ carer.get_care_type_display }}
+    </p>
+
+    <p>
+        <strong>Experience:</strong>
+        {{ carer.experience_years }} years
+    </p>
+
+    <p>
+        <strong>Postcode:</strong>
+        {{ carer.postcode }}
+    </p>
+
+</div>
+
+<div class="card">
+
+    <h2>Certificates</h2>
+
+    <table class="documents-table">
+
+    <thead>
+        <tr>
+            <th>Certificate</th>
+            <th>Status</th>
+            <th>Issue Date</th>
+            <th>Expiry Date</th>
+            <th>Compliance</th>
+            <th style="text-align:center;">File</th>
+            <th style="text-align:center;">Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for document in documents %}
+
+        <tr>
+
+            <td>{{ document.document_name }}</td>
+
+            <td>
+
+{% if document.status == "approved" %}
+
+    <span style="
+        background:#dcfce7;
+        color:#166534;
+        padding:6px 12px;
+        border-radius:999px;
+        font-weight:bold;
+    ">
+        ✅ Approved
+    </span>
+
+{% elif document.status == "rejected" %}
+
+    <span style="
+        background:#fee2e2;
+        color:#991b1b;
+        padding:6px 12px;
+        border-radius:999px;
+        font-weight:bold;
+    ">
+        ❌ Rejected
+    </span>
+
+{% else %}
+
+    <span style="
+        background:#fef3c7;
+        color:#92400e;
+        padding:6px 12px;
+        border-radius:999px;
+        font-weight:bold;
+    ">
+        🟡 Pending
+    </span>
+
+{% endif %}
+
+</td>
+
+            <td>
+                {{ document.issue_date|date:"d/m/Y" }}
+            </td>
+
+            <td>
+                {{ document.expiry_date|date:"d/m/Y" }}
+            </td>
+            <td>
+
+{% if document.compliance == "expired" %}
+
+    <span style="
+        background:#fee2e2;
+        color:#991b1b;
+        padding:6px 12px;
+        border-radius:999px;
+        font-weight:bold;
+    ">
+        ❌ Expired
+    </span>
+
+{% elif document.compliance == "expiring" %}
+
+    <span style="
+        background:#fef3c7;
+        color:#92400e;
+        padding:6px 12px;
+        border-radius:999px;
+        font-weight:bold;
+    ">
+        ⚠️ Expires Soon
+    </span>
+
+{% else %}
+
+    <span style="
+        background:#dcfce7;
+        color:#166534;
+        padding:6px 12px;
+        border-radius:999px;
+        font-weight:bold;
+    ">
+        ✅ Valid
+    </span>
+
+{% endif %}
+
+</td>
+
+            <td>
+                <td style="text-align:center;">
+
+    <a href="{{ document.file.url }}" target="_blank">
+      
+                <a href="{{ document.file.url }}" target="_blank" class="view-btn">
+                    📄 View
+                </a>
+    </a>
+            </td>
+
+            <td style="text-align:center;">
+
+                <a href="/admin-dashboard/documents/{{ document.id }}/approve/" class="approve-btn">
+                    Approve
+                </a>
+
+                |
+
+                <a href="/admin-dashboard/documents/{{ document.id }}/reject/" class="reject-btn">
+                    Reject
+                </a>
+
+            </td>
+
+        </tr>
+
+    {% empty %}
+
+        <tr>
+            <td colspan="6">
+                No certificates uploaded.
+            </td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+
+<div class="card">
+
+    <h2>Bookings</h2>
+
+    <p>
+        Total Bookings:
+        {{ bookings|length }}
+    </p>
+
+</div>
+
+</body>
+</html>
