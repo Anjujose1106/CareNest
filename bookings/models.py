@@ -23,6 +23,20 @@ class Booking(models.Model):
 
     client_email = models.EmailField()
 
+    client_phone = models.CharField(
+        max_length=20,
+        blank=True
+    )
+
+    client_address = models.TextField(
+        blank=True
+    )
+
+    client_postcode = models.CharField(
+        max_length=20,
+        blank=True
+    )
+
     carer = models.ForeignKey(
         Carer,
         on_delete=models.CASCADE

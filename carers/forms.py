@@ -1,5 +1,6 @@
 from django import forms
 from .models import CarerApplication, CarerDocument
+from .models import Carer
 
 
 class CarerApplicationForm(forms.ModelForm):
@@ -59,5 +60,26 @@ class CarerDocumentForm(forms.ModelForm):
             ),
             'expiry_date': forms.DateInput(
                 attrs={'type': 'date'}
+            ),
+        }
+class CarerSettingsForm(forms.ModelForm):
+
+    class Meta:
+        model = Carer
+
+        fields = [
+            'full_name',
+            'email',
+            'phone_number',
+            'address',
+            'postcode',
+            'hourly_rate',
+            'bio',
+            'photo',
+        ]
+
+        widgets = {
+            'bio': forms.Textarea(
+                attrs={'rows': 4}
             ),
         }

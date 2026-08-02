@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Carer, CarerApplication, Availability, CarerDocument
-from .forms import CarerApplicationForm, CarerDocumentForm
+from .forms import CarerApplicationForm, CarerDocumentForm, CarerSettingsForm
 from django.contrib.auth.decorators import login_required
 from datetime import date, datetime, timedelta
 from bookings.models import Booking
@@ -101,6 +101,24 @@ def carer_dashboard(request):
         )
     if request.method == "POST":
 
+        if "save_settings" in request.POST:
+
+            settings_form = CarerSettingsForm(
+                request.POST,
+                request.FILES,
+                instance=carer
+            )
+
+            print(settings_form.fields.keys())
+
+            if settings_form.is_valid():
+
+                settings_form.save()
+
+                return redirect(
+                    "/carer-dashboard/#settings"
+                )
+
         if "document_name" in request.POST:
 
             form = CarerDocumentForm(
@@ -168,6 +186,9 @@ def carer_dashboard(request):
     ).order_by('-uploaded_at')
 
     document_form = CarerDocumentForm()
+    settings_form = CarerSettingsForm(
+        instance=carer
+    )
 
     available_dates = []
     unavailable_dates = []
@@ -270,6 +291,7 @@ def carer_dashboard(request):
             'documents': documents,
             'document_form': document_form,
             'today': date.today(),
+            'settings_form': settings_form,
         }
    )
 

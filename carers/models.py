@@ -42,6 +42,10 @@ class Carer(models.Model):
     )
     full_name = models.CharField(max_length=100)
 
+    email = models.EmailField(
+        blank=True
+    )
+
     photo = models.ImageField(
         upload_to='carers/',
         blank=True,
@@ -62,7 +66,15 @@ class Carer(models.Model):
         max_digits=8,
         decimal_places=2
     )
+    
+    phone_number = models.CharField(
+        max_length=20,
+        blank=True
+    )
 
+    address = models.TextField(
+        blank=True
+    )
     bio = models.TextField()
 
     dbs_verified = models.BooleanField(
