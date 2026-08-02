@@ -64,6 +64,26 @@ class CarerDocumentForm(forms.ModelForm):
         }
 class CarerSettingsForm(forms.ModelForm):
 
+    SERVICES = [
+        ('Personal Care', 'Personal Care'),
+        ('Dementia Care', 'Dementia Care'),
+        ('Companionship', 'Companionship'),
+        ('Overnight Care', 'Overnight Care'),
+        ('Respite Care', 'Respite Care'),
+        ('Learning Disabilities Support', 'Learning Disabilities Support'),
+        ('Autism Support', 'Autism Support'),
+        ('Live-in Care', 'Live-in Care'),
+        ('Mobility Support', 'Mobility Support'),
+        ('Domestic Support', 'Domestic Support'),
+        ('Shopping & Community Access', 'Shopping & Community Access'),
+    ]
+
+    services_offered = forms.MultipleChoiceField(
+        choices=SERVICES,
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+
     class Meta:
         model = Carer
 
@@ -76,6 +96,7 @@ class CarerSettingsForm(forms.ModelForm):
             'hourly_rate',
             'bio',
             'photo',
+            'services_offered',
         ]
 
         widgets = {

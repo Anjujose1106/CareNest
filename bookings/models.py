@@ -6,11 +6,17 @@ from django.contrib.auth.models import User
 class Booking(models.Model):
 
     CARE_TYPES = (
-        ('elderly', 'Elderly Care'),
-        ('dementia', 'Dementia Care'),
-        ('personal', 'Personal Care'),
-        ('overnight', 'Overnight Care'),
-        ('companionship', 'Companionship'),
+        ('Personal Care', 'Personal Care'),
+        ('Dementia Care', 'Dementia Care'),
+        ('Companionship', 'Companionship'),
+        ('Overnight Care', 'Overnight Care'),
+        ('Respite Care', 'Respite Care'),
+        ('Learning Disabilities Support', 'Learning Disabilities Support'),
+        ('Autism Support', 'Autism Support'),
+        ('Live-in Care', 'Live-in Care'),
+        ('Mobility Support', 'Mobility Support'),
+        ('Domestic Support', 'Domestic Support'),
+        ('Shopping & Community Access', 'Shopping & Community Access'),
     )
     family = models.ForeignKey(
         User,

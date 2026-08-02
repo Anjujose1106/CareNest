@@ -299,8 +299,20 @@
                 </div>
 
                 <div class="info-box">
-                    <span>Care Services</span>
-                    <strong>{{ carer.care_type }}</strong>
+                    <span>Services Offered</span>
+
+                    {% if carer.services_offered %}
+
+                        {% for service in carer.services_offered %}
+                            <div>✅ {{ service }}</div>
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div>No services added yet.</div>
+
+                    {% endif %}
+
                 </div>
 
                 <div class="info-box">

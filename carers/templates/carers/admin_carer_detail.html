@@ -129,10 +129,21 @@
 
     <h2>Profile</h2>
 
-    <p>
-        <strong>Care Type:</strong>
-        {{ carer.get_care_type_display }}
-    </p>
+         <p>
+    <strong>Services Offered:</strong>
+</p>
+
+        {% if carer.services_offered %}
+
+            {% for service in carer.services_offered %}
+                <p>✅ {{ service }}</p>
+            {% endfor %}
+
+        {% else %}
+
+            <p>{{ carer.get_care_type_display }}</p>
+
+        {% endif %}     
 
     <p>
         <strong>Experience:</strong>

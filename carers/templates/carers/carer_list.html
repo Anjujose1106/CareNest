@@ -508,29 +508,7 @@
     </div>
 
 </section>
-<section class="categories">
 
-    <div class="category">
-        ❤️ Personal Care
-    </div>
-
-    <div class="category">
-        🧠 Dementia Care
-    </div>
-
-    <div class="category">
-        🧑‍🦳 Elderly Care
-    </div>
-
-    <div class="category">
-        🌙 Overnight Care
-    </div>
-
-    <div class="category">
-        🤝 Companionship
-    </div>
-
-</section>
 <h2 style="text-align:center;">
     Available Carers
 </h2>
@@ -553,17 +531,51 @@
 </div>
 <div class="filter-buttons">
 
-<a href="/carers/">All</a>
+<a href="/">All</a>
 
-   <a href="/carers/?care_type=Personal%20Care">❤️ Personal Care</a>
-    
-   <a href="/carers/?care_type=Personal%20Care">🧑‍🦳 Elderly care</a>
-   
-   <a href="/carers/?care_type=Dementia%20Care">🧠 Dementia Care</a>
+<a href="/carers/?care_type=Personal%20Care">
+    ❤️ Personal Care
+</a>
 
-    <a href="/carers/?care_type=Companionship">🤝 Companionship</a>
+<a href="/carers/?care_type=Dementia%20Care">
+    🧠 Dementia Care
+</a>
 
-    <a href="/carers/?care_type=Overnight%20Care">🌙 Overnight Care</a>
+<a href="/carers/?care_type=Companionship">
+    🤝 Companionship
+</a>
+
+<a href="/carers/?care_type=Overnight%20Care">
+    🌙 Overnight Care
+</a>
+
+<a href="/carers/?care_type=Respite%20Care">
+    ☕ Respite Care
+</a>
+
+<a href="/carers/?care_type=Live-in%20Care">
+    🏠 Live-in Care
+</a>
+
+<a href="/carers/?care_type=Mobility%20Support">
+    ♿ Mobility Support
+</a>
+
+<a href="/carers/?care_type=Domestic%20Support">
+    🧹 Domestic Support
+</a>
+
+<a href="/carers/?care_type=Shopping%20%26%20Community%20Access">
+    🛒 Community Access
+</a>
+
+<a href="/carers/?care_type=Learning%20Disabilities%20Support">
+    🧩 Learning Disabilities
+</a>
+
+<a href="/carers/?care_type=Autism%20Support">
+    🌈 Autism Support
+</a>
 
 </div>
 <div class="carers-grid">
@@ -590,6 +602,18 @@
 
     <p>📍 {{ carer.postcode }}</p>
         <p>✅ DBS Verified</p>
+
+        {% if carer.services_offered %}
+
+                <p>
+                    {{ carer.services_offered|join:", " }}
+                </p>
+
+            {% else %}
+
+                <p>{{ carer.care_type }}</p>
+
+        {% endif %}
 
         <p class="price">
             £{{ carer.hourly_rate }}/hour

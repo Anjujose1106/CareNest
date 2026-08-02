@@ -29,16 +29,28 @@ class Carer(models.Model):
     )
 
     CARE_TYPES = (
-        ('Dementia Care', 'Dementia Care'),
         ('Personal Care', 'Personal Care'),
+        ('Dementia Care', 'Dementia Care'),
         ('Companionship', 'Companionship'),
         ('Overnight Care', 'Overnight Care'),
+        ('Respite Care', 'Respite Care'),
+        ('Learning Disabilities Support', 'Learning Disabilities Support'),
+        ('Autism Support', 'Autism Support'),
+        ('Live-in Care', 'Live-in Care'),
+        ('Mobility Support', 'Mobility Support'),
+        ('Domestic Support', 'Domestic Support'),
+        ('Shopping & Community Access', 'Shopping & Community Access'),
     )
    
     care_type = models.CharField(
         max_length=50,
         choices=CARE_TYPES,
         default='Personal Care'
+    )
+
+    services_offered = models.JSONField(
+        default=list,
+        blank=True
     )
     full_name = models.CharField(max_length=100)
 
